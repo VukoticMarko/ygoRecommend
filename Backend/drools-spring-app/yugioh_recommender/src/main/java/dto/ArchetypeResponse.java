@@ -1,4 +1,4 @@
-package model;
+package dto;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
@@ -16,129 +15,83 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Type;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import model.Archetype;
+import model.Attribute;
+import model.Difficulty;
+import model.ExtraDeckType;
+import model.Playstyle;
+import model.SubTypeA;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+public class ArchetypeResponse {
 
-@Entity(name = "archetypes")
-public class Archetype {
-	// Dodaj klase poveznice
-	// For eg. I'll use Cyber Dragon Archetype in the comments
-	@Id
-    @Column(name = "id", columnDefinition = "varchar(36)")
-    @Type(type = "uuid-char")
 	private UUID id;
-	
-	@Column(name = "archetype_name")
 	private String archetypeName; // "Cyber Dragon"
-	
-	@Column(name = "description")
 	private String description; // Description of decks lore, anime appearance, behavior...
-	
-	@Column(name = "how_to_play")
 	private String howToPlay; // Text description of decks gameplan and strategy
-	
-	
-	@Column(name = "main_type_of_deck")
-	@Enumerated(EnumType.STRING)
 	private Type mainTypeOfDeck; // Machine
-	
-	
-	@ElementCollection(targetClass=Type.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "archetype_types_in_deck")
-    @Column(name = "types_in_deck")
 	private List<Type> typesInDeck; // Cyber Dragon has Machine and Dragon type here (By looks of the cards)
-
-	
-	@ManyToMany
-	@JoinTable(
-	  name = "archetype_sub_types_in_deck", 
-	  joinColumns = @JoinColumn(name = "archetype_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "sub_type_a_id"))
 	private List<SubTypeA> subTypesInDeck; // Effect, Link, Fusion, XYZ
-	
-	
-	@Column(name = "deck_difficulty_int")
 	private int deckDifficultyInt; // 1-12;
-	
-	
-	@Column(name = "deck_difficulty")
-	@Enumerated(EnumType.STRING)
 	private Difficulty deckDifficulty; // Easy (1-3), Medium (4-6), Hard (7-9), Master (10-12) 
-	
-	
-	@ElementCollection(targetClass=ExtraDeckType.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "archetype_extra_deck")
-    @Column(name = "extra_deck")
 	private List<ExtraDeckType> extraDeck; // Link, Fusion, XYZ
-	
-	
-	@ElementCollection(targetClass=Playstyle.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "archetype_playstyle")
-    @Column(name = "playstyle")
 	private List<Playstyle> playstyle; // OTK, Beatdown-Aggro
-	
-	
-	@ElementCollection(targetClass=Attribute.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "archetype_attribute")
-    @Column(name = "attribute")
 	private List<Attribute> attribute; // Light, Dark
+	private List<String> keywords; 
 	
+	public ArchetypeResponse(Archetype archetype) {
+			this.id = archetype.getId();
+			this.archetypeName = archetype.getArchetypeName();
+			this.description = archetype.getDescription();
+			this.howToPlay = archetype.getHowToPlay();
+			this.mainTypeOfDeck = archetype.getMainTypeOfDeck();
+			this.typesInDeck = archetype.getTypesInDeck();
+			this.subTypesInDeck = archetype.getSubTypesInDeck();
+			this.deckDifficultyInt = archetype.getDeckDifficultyInt();
+			this.deckDifficulty = archetype.getDeckDifficulty();
+			this.extraDeck = archetype.getExtraDeck();
+			this.playstyle = archetype.getPlaystyle();
+			this.attribute = archetype.getAttribute();
+			this.keywords = archetype.getKeywords();
+	}
 	
-	@ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "archetype_keywords")
-    @Column(name = "keywords")
-	private List<String> keywords; // Keywords that can be used if user wants to do word search.
-						   // For Cyber Dragon words are: cyber, dragon, otk, dark, light, machine...
-	// Mozda atributi za slike koje ce se koristiti na frontu?
-	//private String base64Image
-	
+	public ArchetypeResponse(UUID id, String archetypeName, String description, String howToPlay, Type mainTypeOfDeck,
+			List<Type> typesInDeck, List<SubTypeA> subTypesInDeck, int deckDifficultyInt, Difficulty deckDifficulty,
+			List<ExtraDeckType> extraDeck, List<Playstyle> playstyle, List<Attribute> attribute,
+			List<String> keywords) {
+		super();
+		this.id = id;
+		this.archetypeName = archetypeName;
+		this.description = description;
+		this.howToPlay = howToPlay;
+		this.mainTypeOfDeck = mainTypeOfDeck;
+		this.typesInDeck = typesInDeck;
+		this.subTypesInDeck = subTypesInDeck;
+		this.deckDifficultyInt = deckDifficultyInt;
+		this.deckDifficulty = deckDifficulty;
+		this.extraDeck = extraDeck;
+		this.playstyle = playstyle;
+		this.attribute = attribute;
+		this.keywords = keywords;
+	}
 
-	public Archetype(UUID id, String archetypeName, String description, String howToPlay,
-								Type mainTypeOfDeck, List<Type> typesInDeck, List<SubTypeA> subTypesInDeck,
-								int deckDifficultyInt, Difficulty deckDifficulty, List<ExtraDeckType> extraDeck,
-								List<Playstyle> playstyle, List<Attribute> attribute, List<String> keywords) {
-							super();
-							this.id = id;
-							this.archetypeName = archetypeName;
-							this.description = description;
-							this.howToPlay = howToPlay;
-							this.mainTypeOfDeck = mainTypeOfDeck;
-							this.typesInDeck = typesInDeck;
-							this.subTypesInDeck = subTypesInDeck;
-							this.deckDifficultyInt = deckDifficultyInt;
-							this.deckDifficulty = deckDifficulty;
-							this.extraDeck = extraDeck;
-							this.playstyle = playstyle;
-							this.attribute = attribute;
-							this.keywords = keywords;
-						}
 	
 
 	public UUID getId() {
 		return id;
 	}
 
-	
+
 
 	public void setId(UUID id) {
 		this.id = id;
 	}
 
 
+
 	public String getArchetypeName() {
 		return archetypeName;
 	}
+	
 
 
 	public void setArchetypeName(String archetypeName) {
@@ -146,9 +99,11 @@ public class Archetype {
 	}
 
 
+
 	public String getDescription() {
 		return description;
 	}
+
 
 
 	public void setDescription(String description) {
@@ -156,9 +111,11 @@ public class Archetype {
 	}
 
 
+
 	public String getHowToPlay() {
 		return howToPlay;
 	}
+
 
 
 	public void setHowToPlay(String howToPlay) {
@@ -166,9 +123,11 @@ public class Archetype {
 	}
 
 
+
 	public Type getMainTypeOfDeck() {
 		return mainTypeOfDeck;
 	}
+
 
 
 	public void setMainTypeOfDeck(Type mainTypeOfDeck) {
@@ -176,9 +135,11 @@ public class Archetype {
 	}
 
 
+
 	public List<Type> getTypesInDeck() {
 		return typesInDeck;
 	}
+
 
 
 	public void setTypesInDeck(List<Type> typesInDeck) {
@@ -186,9 +147,11 @@ public class Archetype {
 	}
 
 
+
 	public List<SubTypeA> getSubTypesInDeck() {
 		return subTypesInDeck;
 	}
+
 
 
 	public void setSubTypesInDeck(List<SubTypeA> subTypesInDeck) {
@@ -196,9 +159,11 @@ public class Archetype {
 	}
 
 
+
 	public int getDeckDifficultyInt() {
 		return deckDifficultyInt;
 	}
+
 
 
 	public void setDeckDifficultyInt(int deckDifficultyInt) {
@@ -206,9 +171,11 @@ public class Archetype {
 	}
 
 
+
 	public Difficulty getDeckDifficulty() {
 		return deckDifficulty;
 	}
+
 
 
 	public void setDeckDifficulty(Difficulty deckDifficulty) {
@@ -216,9 +183,11 @@ public class Archetype {
 	}
 
 
+
 	public List<ExtraDeckType> getExtraDeck() {
 		return extraDeck;
 	}
+
 
 
 	public void setExtraDeck(List<ExtraDeckType> extraDeck) {
@@ -226,9 +195,11 @@ public class Archetype {
 	}
 
 
+
 	public List<Playstyle> getPlaystyle() {
 		return playstyle;
 	}
+
 
 
 	public void setPlaystyle(List<Playstyle> playstyle) {
@@ -236,9 +207,11 @@ public class Archetype {
 	}
 
 
+
 	public List<Attribute> getAttribute() {
 		return attribute;
 	}
+
 
 
 	public void setAttribute(List<Attribute> attribute) {
@@ -246,15 +219,16 @@ public class Archetype {
 	}
 
 
+
 	public List<String> getKeywords() {
 		return keywords;
 	}
 
 
+
 	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
 	}
-	
-	
-	
+
+
 }
