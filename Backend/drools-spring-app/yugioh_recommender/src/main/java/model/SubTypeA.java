@@ -54,7 +54,6 @@ public class SubTypeA { // Associative
 	// When creating archetype
 	public SubTypeA(SubType subType, int difficulty) {
 		super();
-		this.id = id;
 		this.subType = subType;
 		this.difficulty = convertDifficulty(difficulty);
 	}
