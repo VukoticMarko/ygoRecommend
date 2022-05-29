@@ -53,22 +53,22 @@ public class ArchetypeService {
     public UUID create(ArchetypeRequest archetype) {
 		UUID id = UUID.randomUUID();
 		
-		Archetype arch = new Archetype(
-				id, 
-				archetype.getName(),
-				archetype.getDescription(),
-				archetype.getHowToPlay(),
-				archetype.getMainTypeOfDeck(),
-				archetype.getChosenTypes(),
-				//archetype.getChosenSubTypes(),
-				archetype.getChosenDifficulty(),
-				archetype.getDifficulty(),
-				archetype.getChosenExtraDeckMechanics(),
-				archetype.getChosenPlaystyle(),
-				archetype.getAttribute(),
-				archetype.getKeywords()
-				);
-		archetypeRepository.save(arch);
+//		Archetype arch = new Archetype(
+//				id, 
+//				archetype.getName(),
+//				archetype.getDescription(),
+//				archetype.getHowToPlay(),
+//				archetype.getMainTypeOfDeck(),
+//				archetype.getChosenTypes(),
+//				//archetype.getChosenSubTypes(),
+//				archetype.getChosenDifficulty(),
+//				archetype.getDifficulty(),
+//				archetype.getChosenExtraDeckMechanics(),
+//				archetype.getChosenPlaystyle(),
+//				archetype.getAttribute(),
+//				archetype.getKeywords()
+//				);
+//		archetypeRepository.save(arch);
 		return id;
 	}
 
