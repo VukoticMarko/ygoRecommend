@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import yugioh_recommend.model.*;
 
@@ -48,12 +49,12 @@ public class Archetype {
 	private List<Type> typesInDeck; // Cyber Dragon has Machine and Dragon type here (By looks of the cards)
 
 	
-	@ManyToMany
-	@JoinTable(
-	  name = "archetype_sub_types_in_deck", 
-	  joinColumns = @JoinColumn(name = "archetypes_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "sub_type_a_id"))
-	private List<SubTypeA> subTypesInDeck; // Effect, Link, Fusion, XYZ
+//	@ManyToMany
+//	@JoinTable(
+//	  name = "archetype_sub_types_in_deck", 
+//	  joinColumns = @JoinColumn(name = "archetypes_id"), 
+//	  inverseJoinColumns = @JoinColumn(name = "sub_type_a_id"))
+//	private List<SubTypeA> subTypesInDeck; // Effect, Link, Fusion, XYZ
 	
 	
 	@Column(name = "deck_difficulty_int")
@@ -95,6 +96,7 @@ public class Archetype {
 	//private String base64Image
 	
 	// Score for rating the archetype in recommendation
+	@Transient
 	private float current_score;
 	
 	public Archetype() {
@@ -112,7 +114,7 @@ public class Archetype {
 							this.howToPlay = howToPlay;
 							this.mainTypeOfDeck = mainTypeOfDeck;
 							this.typesInDeck = typesInDeck;
-							this.subTypesInDeck = subTypesInDeck;
+							//this.subTypesInDeck = subTypesInDeck;
 							this.deckDifficultyInt = deckDifficultyInt;
 							this.extraDeck = extraDeck;
 							this.playstyle = playstyle;
@@ -183,14 +185,14 @@ public class Archetype {
 	}
 
 
-	public List<SubTypeA> getSubTypesInDeck() {
-		return subTypesInDeck;
-	}
-
-
-	public void setSubTypesInDeck(List<SubTypeA> subTypesInDeck) {
-		this.subTypesInDeck = subTypesInDeck;
-	}
+//	public List<SubTypeA> getSubTypesInDeck() {
+//		return subTypesInDeck;
+//	}
+//
+//
+//	public void setSubTypesInDeck(List<SubTypeA> subTypesInDeck) {
+//		this.subTypesInDeck = subTypesInDeck;
+//	}
 
 
 	public int getDeckDifficultyInt() {

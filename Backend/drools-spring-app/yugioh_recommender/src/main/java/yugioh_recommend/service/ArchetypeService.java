@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 
 import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,14 @@ public class ArchetypeService {
 		}
 		archetypeRepository.deleteById(maybeArchetype.get().getId());
 	}
-
+	
+	public ArchetypeRequest recommend(ArchetypeRequest areq) {
+		KieSession kieSession = kieContainer.newKieSession();
+		kieSession.insert(areq);
+		//ArchetypeResponse arsp = new ArchetypeResponse();
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		return areq;
+	}
 	
 }

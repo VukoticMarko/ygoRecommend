@@ -27,6 +27,7 @@ public class ArchetypeResponse {
 	private List<Playstyle> playstyle; // OTK, Beatdown-Aggro
 	private List<Attribute> attribute; // Light, Dark
 	private List<String> keywords; 
+	private float current_score;
 	
 	public ArchetypeResponse(Archetype archetype) {
 			this.id = archetype.getId();
@@ -35,12 +36,13 @@ public class ArchetypeResponse {
 			this.howToPlay = archetype.getHowToPlay();
 			this.mainTypeOfDeck = archetype.getMainTypeOfDeck();
 			this.typesInDeck = archetype.getTypesInDeck();
-			this.subTypesInDeck = archetype.getSubTypesInDeck();
+			//this.subTypesInDeck = archetype.getSubTypesInDeck();
 			this.deckDifficultyInt = archetype.getDeckDifficultyInt();
 			this.extraDeck = archetype.getExtraDeck();
 			this.playstyle = archetype.getPlaystyle();
 			this.attribute = archetype.getAttribute();
 			this.keywords = archetype.getKeywords();
+			this.current_score = 0;
 	}
 	
 	public ArchetypeResponse(UUID id, String archetypeName, String description, String howToPlay, Type mainTypeOfDeck,
@@ -60,10 +62,13 @@ public class ArchetypeResponse {
 		this.playstyle = playstyle;
 		this.attribute = attribute;
 		this.keywords = keywords;
+		this.current_score = 0;
 	}
-
 	
-
+	public ArchetypeResponse() {
+		
+	}
+	
 	public UUID getId() {
 		return id;
 	}

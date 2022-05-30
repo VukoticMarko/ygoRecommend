@@ -1,0 +1,45 @@
+package sbnz.integracija;
+
+import yugioh_recommend.model.*;
+import yugioh_recommend.dto.*;
+
+rule "Determine Deck Difficulty - Easy"
+	when
+		$areq: ArchetypeRequest(chosenDifficulty > 0 && chosenDifficulty <= 3)
+	then
+		modify($areq) {setDifficulty(Difficulty.Easy)}
+end
+	
+rule "Determine Deck Difficulty - Medium"
+	when
+		$areq: ArchetypeRequest(chosenDifficulty >= 4 && chosenDifficulty <= 6)
+	then
+		modify($areq) {setDifficulty(Difficulty.Medium)}
+end
+	
+rule "Determine Deck Difficulty - Hard"
+	when
+		$areq: ArchetypeRequest(chosenDifficulty >= 7 && chosenDifficulty <= 9)
+	then
+		modify($areq) {setDifficulty(Difficulty.Hard)}
+end
+	
+rule "Determine Deck Difficulty - Master"
+	when
+		$areq: ArchetypeRequest(chosenDifficulty >= 10 && chosenDifficulty <= 12)
+	then
+		modify($areq) {setDifficulty(Difficulty.Master)}
+end
+		
+		
+rule "Temp Sub-Type Rule - Easy - Normal Sub-Type"
+	when
+		$areq: ArchetypeRequest(difficulty == Difficulty.Easy && chosenSubTypes contains SubType.Normal)
+	then
+		float cs = $areq.getCurrentScore();
+		modify($areq) {setCurrentScore(cs + 5)}
+end
+		
+		
+		
+		

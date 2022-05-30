@@ -50,5 +50,9 @@ public class ArchetypeController {
     	archetypeService.delete(id);
     }
 
+    @PostMapping("/recommend")
+    public ArchetypeRequest recommend(@RequestBody ArchetypeRequest pr) {
+        return archetypeService.recommend(pr);
+    }
    
 }

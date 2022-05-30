@@ -22,6 +22,11 @@ public class ArchetypeRequest {
 	private String chosenPlaystyle;
 	private Attribute attribute;
 	private String keywords;
+	private float currentScore;
+	
+	public ArchetypeRequest() {
+		
+	}
 	
 	// Constructor for recommend system
 	public ArchetypeRequest(List<Type> chosenTypes, List<SubType> chosenSubTypes, int chosenDifficulty,
@@ -51,6 +56,15 @@ public class ArchetypeRequest {
 		this.chosenPlaystyle = chosenPlaystyle;
 		this.attribute = attribute;
 		this.keywords = keywords;
+	}
+
+	
+	public float getCurrentScore() {
+		return currentScore;
+	}
+
+	public void setCurrentScore(float currentScore) {
+		this.currentScore = currentScore;
 	}
 
 	public String getName() {

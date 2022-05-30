@@ -31,8 +31,8 @@ public class SubTypeA { // Associative
 	@Enumerated(EnumType.STRING)
 	private Difficulty difficulty;  // Easy (1-3), Medium (4-6), Hard (7-9), Master (10-12) 
 	
-	@ManyToMany(mappedBy="sub_type_a")
-	private List<Archetype> archetypes;
+	//@ManyToMany(mappedBy="subTypesInDeck")
+	//private List<Archetype> archetypes;
 	
 	public Difficulty convertDifficulty(int diff) {
 		if(diff > 0 && diff <= 3) {
@@ -44,7 +44,9 @@ public class SubTypeA { // Associative
 		}else return Difficulty.Master;
 	}
 
-	
+	public SubTypeA() {
+		
+	}
 	
 	public SubTypeA(UUID id, SubType subType, Difficulty difficulty) {
 		super();
