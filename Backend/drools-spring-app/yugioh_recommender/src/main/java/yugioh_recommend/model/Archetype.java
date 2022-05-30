@@ -1,4 +1,4 @@
-package model;
+package yugioh_recommend.model;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,17 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.hibernate.annotations.Type;
+import yugioh_recommend.model.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 
 @Entity(name = "archetypes")
 public class Archetype {
@@ -32,7 +23,7 @@ public class Archetype {
 	// For eg. I'll use Cyber Dragon Archetype in the comments
 	@Id
     @Column(name = "id", columnDefinition = "varchar(36)")
-    @Type(type = "uuid-char")
+    @org.hibernate.annotations.Type(type = "uuid-char")
 	private UUID id;
 	
 	@Column(name = "archetype_name")
@@ -60,7 +51,7 @@ public class Archetype {
 	@ManyToMany
 	@JoinTable(
 	  name = "archetype_sub_types_in_deck", 
-	  joinColumns = @JoinColumn(name = "archetype_id"), 
+	  joinColumns = @JoinColumn(name = "archetypes_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "sub_type_a_id"))
 	private List<SubTypeA> subTypesInDeck; // Effect, Link, Fusion, XYZ
 	
@@ -69,9 +60,9 @@ public class Archetype {
 	private int deckDifficultyInt; // 1-12;
 	
 	
-	@Column(name = "deck_difficulty")
-	@Enumerated(EnumType.STRING)
-	private Difficulty deckDifficulty; // Easy (1-3), Medium (4-6), Hard (7-9), Master (10-12) 
+//	@Column(name = "deck_difficulty")
+//	@Enumerated(EnumType.STRING)
+//	private Difficulty deckDifficulty;
 	
 	
 	@ElementCollection(targetClass=ExtraDeckType.class)
@@ -103,10 +94,16 @@ public class Archetype {
 	// Mozda atributi za slike koje ce se koristiti na frontu?
 	//private String base64Image
 	
+	// Score for rating the archetype in recommendation
+	private float current_score;
+	
+	public Archetype() {
+		this.current_score = 0;
+	}
 
 	public Archetype(UUID id, String archetypeName, String description, String howToPlay,
 								Type mainTypeOfDeck, List<Type> typesInDeck, List<SubTypeA> subTypesInDeck,
-								int deckDifficultyInt, Difficulty deckDifficulty, List<ExtraDeckType> extraDeck,
+								int deckDifficultyInt, List<ExtraDeckType> extraDeck,
 								List<Playstyle> playstyle, List<Attribute> attribute, List<String> keywords) {
 							super();
 							this.id = id;
@@ -117,11 +114,11 @@ public class Archetype {
 							this.typesInDeck = typesInDeck;
 							this.subTypesInDeck = subTypesInDeck;
 							this.deckDifficultyInt = deckDifficultyInt;
-							this.deckDifficulty = deckDifficulty;
 							this.extraDeck = extraDeck;
 							this.playstyle = playstyle;
 							this.attribute = attribute;
 							this.keywords = keywords;
+							this.current_score = 0;
 						}
 	
 
@@ -203,16 +200,6 @@ public class Archetype {
 
 	public void setDeckDifficultyInt(int deckDifficultyInt) {
 		this.deckDifficultyInt = deckDifficultyInt;
-	}
-
-
-	public Difficulty getDeckDifficulty() {
-		return deckDifficulty;
-	}
-
-
-	public void setDeckDifficulty(Difficulty deckDifficulty) {
-		this.deckDifficulty = deckDifficulty;
 	}
 
 

@@ -1,12 +1,12 @@
-package dto;
+package yugioh_recommend.dto;
 
 import java.util.List;
 
-import model.Attribute;
-import model.Difficulty;
-import model.ExtraDeckType;
-import model.SubType;
-import model.Type;
+import yugioh_recommend.model.Attribute;
+import yugioh_recommend.model.Difficulty;
+import yugioh_recommend.model.ExtraDeckType;
+import yugioh_recommend.model.SubType;
+import yugioh_recommend.model.Type;
 
 public class ArchetypeRequest {
 	

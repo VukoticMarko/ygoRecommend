@@ -1,5 +1,6 @@
-package model;
+package yugioh_recommend.model;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -7,12 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Type;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 
 @Entity(name = "sub_type_a")
 public class SubTypeA { // Associative
@@ -30,7 +29,10 @@ public class SubTypeA { // Associative
 	
 	@Column(name = "difficulty")
 	@Enumerated(EnumType.STRING)
-	private Difficulty difficulty;
+	private Difficulty difficulty;  // Easy (1-3), Medium (4-6), Hard (7-9), Master (10-12) 
+	
+	@ManyToMany(mappedBy="sub_type_a")
+	private List<Archetype> archetypes;
 	
 	public Difficulty convertDifficulty(int diff) {
 		if(diff > 0 && diff <= 3) {

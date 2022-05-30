@@ -1,4 +1,4 @@
-package controller;
+package yugioh_recommend.controller;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import dto.ArchetypeRequest;
-import dto.ArchetypeResponse;
-import service.ArchetypeService;
+import yugioh_recommend.dto.ArchetypeRequest;
+import yugioh_recommend.dto.ArchetypeResponse;
+import yugioh_recommend.service.ArchetypeService;
 
 @RestController
 @RequestMapping("/api/archetypes")

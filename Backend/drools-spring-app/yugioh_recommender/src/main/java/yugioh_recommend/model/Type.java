@@ -1,4 +1,4 @@
-package model;
+package yugioh_recommend.model;
 
 public enum Type {
 	Aqua, Beast, Beast_Warrior, Cyberse, Dinosaur,

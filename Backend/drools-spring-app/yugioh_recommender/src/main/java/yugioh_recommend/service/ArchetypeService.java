@@ -1,6 +1,5 @@
-package service;
+package yugioh_recommend.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dto.ArchetypeRequest;
-import dto.ArchetypeResponse;
-import model.Archetype;
-import model.SubType;
-import repository.ArchetypeRepository;
+import yugioh_recommend.dto.ArchetypeRequest;
+import yugioh_recommend.dto.ArchetypeResponse;
+import yugioh_recommend.model.Archetype;
+import yugioh_recommend.repository.ArchetypeRepository;
 
 @Service
 public class ArchetypeService {

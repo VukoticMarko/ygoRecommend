@@ -1,4 +1,4 @@
-package model;
+package yugioh_recommend.model;
 
 public class Statistics {
 	// Class used for search statistics

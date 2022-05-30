@@ -1,26 +1,16 @@
-package dto;
+package yugioh_recommend.dto;
 
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 
-import org.hibernate.annotations.Type;
-
-import model.Archetype;
-import model.Attribute;
-import model.Difficulty;
-import model.ExtraDeckType;
-import model.Playstyle;
-import model.SubTypeA;
+import yugioh_recommend.model.Archetype;
+import yugioh_recommend.model.Attribute;
+import yugioh_recommend.model.Difficulty;
+import yugioh_recommend.model.ExtraDeckType;
+import yugioh_recommend.model.Playstyle;
+import yugioh_recommend.model.SubTypeA;
+import yugioh_recommend.model.Type;
 
 public class ArchetypeResponse {
 
@@ -47,7 +37,6 @@ public class ArchetypeResponse {
 			this.typesInDeck = archetype.getTypesInDeck();
 			this.subTypesInDeck = archetype.getSubTypesInDeck();
 			this.deckDifficultyInt = archetype.getDeckDifficultyInt();
-			this.deckDifficulty = archetype.getDeckDifficulty();
 			this.extraDeck = archetype.getExtraDeck();
 			this.playstyle = archetype.getPlaystyle();
 			this.attribute = archetype.getAttribute();
@@ -67,7 +56,6 @@ public class ArchetypeResponse {
 		this.typesInDeck = typesInDeck;
 		this.subTypesInDeck = subTypesInDeck;
 		this.deckDifficultyInt = deckDifficultyInt;
-		this.deckDifficulty = deckDifficulty;
 		this.extraDeck = extraDeck;
 		this.playstyle = playstyle;
 		this.attribute = attribute;

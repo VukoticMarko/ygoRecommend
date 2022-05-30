@@ -1,4 +1,4 @@
-package facts;
+package yugioh_recommend.facts;
 
 import java.io.Serializable;
 import java.util.Objects;

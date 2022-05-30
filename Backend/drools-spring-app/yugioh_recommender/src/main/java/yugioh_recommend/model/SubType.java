@@ -1,4 +1,4 @@
-package model;
+package yugioh_recommend.model;
 
 public enum SubType {
 	Normal, Effect, Fusion, 	
