@@ -1,7 +1,7 @@
 CREATE TABLE `archetype_attribute` (
   `archetypes_id` varchar(36) NOT NULL,
   `attribute` varchar(45) NOT NULL,
-  PRIMARY KEY (`archetype_id`,`attribute`)
+  PRIMARY KEY (`archetypes_id`,`attribute`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `sub_type_a` (
@@ -24,29 +24,29 @@ CREATE TABLE `archetypes` (
 CREATE TABLE `archetype_types_in_deck` (
   `archetypes_id` varchar(36) NOT NULL,
   `types_in_deck` varchar(45) NOT NULL,
-  PRIMARY KEY (`archetype_id`,`types_in_deck`)
+  PRIMARY KEY (`archetypes_id`,`types_in_deck`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `archetype_sub_types_in_deck` (
   `archetypes_id` varchar(36) NOT NULL,
   `sub_type_a_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`archetype_id`,`sub_type_a_id`)
+  PRIMARY KEY (`archetypes_id`,`sub_type_a_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `archetype_keywords` (
   `archetypes_id` varchar(36) NOT NULL,
   `keywords` varchar(45) NOT NULL,
-  PRIMARY KEY (`archetype_id`,`keywords`)
+  PRIMARY KEY (`archetypes_id`,`keywords`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `archetype_playstyle` (
   `archetypes_id` varchar(36) NOT NULL,
   `playstyle` varchar(45) NOT NULL,
-  PRIMARY KEY (`archetype_id`,`playstyle`)
+  PRIMARY KEY (`archetypes_id`,`playstyle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `archetype_extra_deck` (
   `archetypes_id` varchar(36) NOT NULL,
   `extra_deck` varchar(45) NOT NULL,
-  PRIMARY KEY (`archetype_id`,`extra_deck`)
+  PRIMARY KEY (`archetypes_id`,`extra_deck`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

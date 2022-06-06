@@ -1,5 +1,6 @@
 package yugioh_recommend.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,27 @@ public class ArchetypeResponse {
 	private List<Playstyle> playstyle; // OTK, Beatdown-Aggro
 	private List<Attribute> attribute; // Light, Dark
 	private List<String> keywords; 
-	private float current_score;
+	private float currentScore;
+	private int numberOfTypes;
+	
+	public List<ArchetypeResponse> convertArchToArchResponse(List<Archetype> list){
+		
+		List<ArchetypeResponse> retList = new ArrayList<ArchetypeResponse>();
+		
+		for (Archetype arch : list) {
+			
+			ArchetypeResponse archRes = new ArchetypeResponse(arch);
+			int typesInDeck = 0;
+			for (Type type : arch.getTypesInDeck()) {
+				typesInDeck++;
+			}
+			archRes.setNumberOfTypes(typesInDeck);
+			retList.add(archRes);
+		}
+		
+		return retList;
+		
+	}
 	
 	public ArchetypeResponse(Archetype archetype) {
 			this.id = archetype.getId();
@@ -42,7 +63,7 @@ public class ArchetypeResponse {
 			this.playstyle = archetype.getPlaystyle();
 			this.attribute = archetype.getAttribute();
 			this.keywords = archetype.getKeywords();
-			this.current_score = 0;
+			this.setCurrentScore(0);
 	}
 	
 	public ArchetypeResponse(UUID id, String archetypeName, String description, String howToPlay, Type mainTypeOfDeck,
@@ -62,7 +83,7 @@ public class ArchetypeResponse {
 		this.playstyle = playstyle;
 		this.attribute = attribute;
 		this.keywords = keywords;
-		this.current_score = 0;
+		this.setCurrentScore(0);
 	}
 	
 	public ArchetypeResponse() {
@@ -221,6 +242,22 @@ public class ArchetypeResponse {
 
 	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
+	}
+
+	public float getCurrentScore() {
+		return currentScore;
+	}
+
+	public void setCurrentScore(float currentScore) {
+		this.currentScore = currentScore;
+	}
+
+	public int getNumberOfTypes() {
+		return numberOfTypes;
+	}
+
+	public void setNumberOfTypes(int numberOfTypes) {
+		this.numberOfTypes = numberOfTypes;
 	}
 
 

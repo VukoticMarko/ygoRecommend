@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import yugioh_recommend.dto.ArchetypeRequest;
 import yugioh_recommend.dto.ArchetypeResponse;
 import yugioh_recommend.model.Archetype;
+import yugioh_recommend.model.Type;
 import yugioh_recommend.repository.ArchetypeRepository;
 
 @Service
@@ -95,7 +96,21 @@ public class ArchetypeService {
 	
 	public ArchetypeRequest recommend(ArchetypeRequest areq) {
 		KieSession kieSession = kieContainer.newKieSession();
+		
+		List<ArchetypeResponse> respList = new ArrayList<ArchetypeResponse>();
+		respList = getAll();
 		kieSession.insert(areq);
+		List<Type> ct = new ArrayList<Type>();
+		ct = areq.getChosenTypes();
+		kieSession.insert(ct);
+		for (ArchetypeResponse aresp : respList) {
+			kieSession.insert(aresp);
+			List<Type> tt = new ArrayList<Type>();
+			tt = aresp.getTypesInDeck();
+			kieSession.insert(respList);
+			kieSession.insert(tt);
+		}
+		
 		//ArchetypeResponse arsp = new ArchetypeResponse();
 		kieSession.fireAllRules();
 		kieSession.dispose();
