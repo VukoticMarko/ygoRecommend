@@ -4,6 +4,8 @@ import yugioh_recommend.model.*;
 import yugioh_recommend.dto.*;
 
 rule "Determine Deck Difficulty - Easy"
+	salience 100
+	agenda-group "determine_difficulty"
 	when
 		$areq: ArchetypeRequest(chosenDifficulty > 0 && chosenDifficulty <= 3)
 	then
@@ -11,6 +13,8 @@ rule "Determine Deck Difficulty - Easy"
 end
 	
 rule "Determine Deck Difficulty - Medium"
+	salience 100
+	agenda-group "determine_difficulty"
 	when
 		$areq: ArchetypeRequest(chosenDifficulty >= 4 && chosenDifficulty <= 6)
 	then
@@ -18,6 +22,8 @@ rule "Determine Deck Difficulty - Medium"
 end
 	
 rule "Determine Deck Difficulty - Hard"
+	salience 100
+	agenda-group "determine_difficulty"
 	when
 		$areq: ArchetypeRequest(chosenDifficulty >= 7 && chosenDifficulty <= 9)
 	then
@@ -25,62 +31,10 @@ rule "Determine Deck Difficulty - Hard"
 end
 	
 rule "Determine Deck Difficulty - Master"
+	salience 100
+	agenda-group "determine_difficulty"
 	when
 		$areq: ArchetypeRequest(chosenDifficulty >= 10 && chosenDifficulty <= 12)
 	then
 		modify($areq) {setDifficulty(Difficulty.Master)}
 end
-		
-		
-rule "Temp Sub-Type Rule - Easy & Normal Sub-Type"
-	salience 2
-	when
-		$areq: ArchetypeRequest(difficulty == Difficulty.Easy && chosenSubTypes contains SubType.Normal)
-	then
-		float cs = $areq.getCurrentScore();
-		modify($areq) {setCurrentScore(cs + 0.5)}
-end
-
-rule "Temp Type Rule - Number Of Types In Archetype"
-	when
-		$ct: ArrayList();
-		$tt: ArrayList();
-		$areq: ArchetypeRequest($chosenTypes: chosenTypes)
-		$aresp: ArchetypeResponse($currentScore: currentScore, $types: typesInDeck);
-		$value: Number() from accumulate
-			(
-				Type($type: this) from $types,
-			init
-				(
-					float count = 0;
-				),
-				action
-				(
-					count += 1f;
-				),
-				result
-				(
-					count
-			    )
-			)
-				
-	then
-		float count = (float)$value.floatValue();
-		for(int i = 0; i < $ct.size(); ++i){
-			Type cType = (Type)$ct.get(i);
-			for(int j = 0; j < $tt.size(); ++j){	
-				Type tType = (Type)$tt.get(j);
-				if(cType.equals(tType)){
-					if(count == 1){
-						float cs = $areq.getCurrentScore();
-						modify($aresp) {setCurrentScore(cs + 0.5)}
-					}else if($types.size() == count){
-						modify($aresp){setCurrentScore(cs + (0.3 * count))}
-					}
-				} 
-			}
-		}
-end
-
-		
-		

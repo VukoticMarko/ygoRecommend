@@ -1,0 +1,14 @@
+package sbnz.integracija;
+
+import yugioh_recommend.model.*;
+import yugioh_recommend.dto.*;
+
+rule "Sub-Type Rule - Easy & Normal Sub-Type"
+	salience 2
+	when
+		$areq: ArchetypeRequest(difficulty == Difficulty.Easy && chosenSubTypes contains SubType.Normal)
+		$aresp: ArchetypeResponse()
+	then
+		double cs = $areq.getCurrentScore();
+		modify($aresp) {setCurrentScore(cs + 0.5)}
+end

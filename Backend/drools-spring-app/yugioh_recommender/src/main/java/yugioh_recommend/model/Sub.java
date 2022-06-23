@@ -13,8 +13,8 @@ import javax.persistence.ManyToMany;
 import org.hibernate.annotations.Type;
 
 
-@Entity(name = "sub_type_a")
-public class SubTypeA { // Associative
+@Entity(name = "sub")
+public class Sub { // Associative
 	
 	@Id
     @Column(name = "id", columnDefinition = "varchar(36)")
@@ -31,8 +31,8 @@ public class SubTypeA { // Associative
 	@Enumerated(EnumType.STRING)
 	private Difficulty difficulty;  // Easy (1-3), Medium (4-6), Hard (7-9), Master (10-12) 
 	
-	//@ManyToMany(mappedBy="subTypesInDeck")
-	//private List<Archetype> archetypes;
+	@ManyToMany(mappedBy="subs")
+	private List<Archetype> archetypes;
 	
 	public Difficulty convertDifficulty(int diff) {
 		if(diff > 0 && diff <= 3) {
@@ -44,11 +44,11 @@ public class SubTypeA { // Associative
 		}else return Difficulty.Master;
 	}
 
-	public SubTypeA() {
+	public Sub() {
 		
 	}
 	
-	public SubTypeA(UUID id, SubType subType, Difficulty difficulty) {
+	public Sub(UUID id, SubType subType, Difficulty difficulty) {
 		super();
 		this.id = id;
 		this.subType = subType;
@@ -56,10 +56,42 @@ public class SubTypeA { // Associative
 	}
 
 	// When creating archetype
-	public SubTypeA(SubType subType, int difficulty) {
+	public Sub(SubType subType, int difficulty) {
 		super();
 		this.subType = subType;
 		this.difficulty = convertDifficulty(difficulty);
+	}
+
+	public List<Archetype> getArchetypes() {
+		return archetypes;
+	}
+
+	public void setArchetypes(List<Archetype> archetypes) {
+		this.archetypes = archetypes;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public SubType getSubType() {
+		return subType;
+	}
+
+	public void setSubType(SubType subType) {
+		this.subType = subType;
+	}
+
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
 	}
 	
 	

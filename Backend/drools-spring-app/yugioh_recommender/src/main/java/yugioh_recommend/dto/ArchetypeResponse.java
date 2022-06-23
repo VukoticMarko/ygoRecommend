@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 import yugioh_recommend.model.Archetype;
 import yugioh_recommend.model.Attribute;
 import yugioh_recommend.model.Difficulty;
 import yugioh_recommend.model.ExtraDeckType;
 import yugioh_recommend.model.Playstyle;
-import yugioh_recommend.model.SubTypeA;
+import yugioh_recommend.model.Sub;
 import yugioh_recommend.model.Type;
 
 public class ArchetypeResponse {
@@ -21,14 +20,14 @@ public class ArchetypeResponse {
 	private String howToPlay; // Text description of decks gameplan and strategy
 	private Type mainTypeOfDeck; // Machine
 	private List<Type> typesInDeck; // Cyber Dragon has Machine and Dragon type here (By looks of the cards)
-	private List<SubTypeA> subTypesInDeck; // Effect, Link, Fusion, XYZ
+	private List<SubResponse> subs; // Effect, Link, Fusion, XYZ
 	private int deckDifficultyInt; // 1-12;
 	private Difficulty deckDifficulty; // Easy (1-3), Medium (4-6), Hard (7-9), Master (10-12) 
 	private List<ExtraDeckType> extraDeck; // Link, Fusion, XYZ
 	private List<Playstyle> playstyle; // OTK, Beatdown-Aggro
 	private List<Attribute> attribute; // Light, Dark
 	private List<String> keywords; 
-	private float currentScore;
+	private double currentScore;
 	private int numberOfTypes;
 	
 	public List<ArchetypeResponse> convertArchToArchResponse(List<Archetype> list){
@@ -57,7 +56,7 @@ public class ArchetypeResponse {
 			this.howToPlay = archetype.getHowToPlay();
 			this.mainTypeOfDeck = archetype.getMainTypeOfDeck();
 			this.typesInDeck = archetype.getTypesInDeck();
-			//this.subTypesInDeck = archetype.getSubTypesInDeck();
+			this.subs = createSubs(archetype.getSubs());
 			this.deckDifficultyInt = archetype.getDeckDifficultyInt();
 			this.extraDeck = archetype.getExtraDeck();
 			this.playstyle = archetype.getPlaystyle();
@@ -66,8 +65,17 @@ public class ArchetypeResponse {
 			this.setCurrentScore(0);
 	}
 	
+	private List<SubResponse> createSubs(List<Sub> subs2) {
+		List<SubResponse> returnList = new ArrayList<SubResponse>();
+		for (Sub sub : subs2) {
+			returnList
+			.add(new SubResponse(sub.getId(), sub.getSubType(), sub.getDifficulty()));
+		}
+		return returnList;
+	}
+
 	public ArchetypeResponse(UUID id, String archetypeName, String description, String howToPlay, Type mainTypeOfDeck,
-			List<Type> typesInDeck, List<SubTypeA> subTypesInDeck, int deckDifficultyInt, Difficulty deckDifficulty,
+			List<Type> typesInDeck, List<Sub> subTypesInDeck, int deckDifficultyInt, Difficulty deckDifficulty,
 			List<ExtraDeckType> extraDeck, List<Playstyle> playstyle, List<Attribute> attribute,
 			List<String> keywords) {
 		super();
@@ -77,7 +85,7 @@ public class ArchetypeResponse {
 		this.howToPlay = howToPlay;
 		this.mainTypeOfDeck = mainTypeOfDeck;
 		this.typesInDeck = typesInDeck;
-		this.subTypesInDeck = subTypesInDeck;
+		//this.subs = subTypesInDeck;
 		this.deckDifficultyInt = deckDifficultyInt;
 		this.extraDeck = extraDeck;
 		this.playstyle = playstyle;
@@ -162,14 +170,14 @@ public class ArchetypeResponse {
 
 
 
-	public List<SubTypeA> getSubTypesInDeck() {
-		return subTypesInDeck;
+	public List<SubResponse> getSubs() {
+		return subs;
 	}
 
 
 
-	public void setSubTypesInDeck(List<SubTypeA> subTypesInDeck) {
-		this.subTypesInDeck = subTypesInDeck;
+	public void setSubs(List<SubResponse> subTypesInDeck) {
+		this.subs = subTypesInDeck;
 	}
 
 
@@ -244,11 +252,11 @@ public class ArchetypeResponse {
 		this.keywords = keywords;
 	}
 
-	public float getCurrentScore() {
+	public double getCurrentScore() {
 		return currentScore;
 	}
 
-	public void setCurrentScore(float currentScore) {
+	public void setCurrentScore(double currentScore) {
 		this.currentScore = currentScore;
 	}
 

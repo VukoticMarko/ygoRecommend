@@ -1,5 +1,5 @@
 /*
--- Query: SELECT * FROM yugioh_db.sub_type_a
+-- Query: SELECT * FROM yugioh_db.subs
 LIMIT 0, 1000
 
 -- Date: 2022-05-29 13:35

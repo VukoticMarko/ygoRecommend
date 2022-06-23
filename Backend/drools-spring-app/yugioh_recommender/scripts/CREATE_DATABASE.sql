@@ -4,7 +4,7 @@ CREATE TABLE `archetype_attribute` (
   PRIMARY KEY (`archetypes_id`,`attribute`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `sub_type_a` (
+CREATE TABLE `subs` (
   `id` varchar(36) NOT NULL,
   `sub_type` varchar(45) DEFAULT NULL,
   `difficulty` varchar(45) DEFAULT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE `archetype_types_in_deck` (
 
 CREATE TABLE `archetype_sub_types_in_deck` (
   `archetypes_id` varchar(36) NOT NULL,
-  `sub_type_a_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`archetypes_id`,`sub_type_a_id`)
+  `sub_id` varchar(36) NOT NULL,
+  PRIMARY KEY (`archetypes_id`,`sub_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `archetype_keywords` (

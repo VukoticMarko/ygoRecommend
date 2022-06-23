@@ -22,7 +22,7 @@ public class ArchetypeRequest {
 	private String chosenPlaystyle;
 	private Attribute attribute;
 	private String keywords;
-	private float currentScore;
+	private double currentScore;
 	
 	public ArchetypeRequest() {
 		
@@ -59,11 +59,11 @@ public class ArchetypeRequest {
 	}
 
 	
-	public float getCurrentScore() {
+	public double getCurrentScore() {
 		return currentScore;
 	}
 
-	public void setCurrentScore(float currentScore) {
+	public void setCurrentScore(double currentScore) {
 		this.currentScore = currentScore;
 	}
 

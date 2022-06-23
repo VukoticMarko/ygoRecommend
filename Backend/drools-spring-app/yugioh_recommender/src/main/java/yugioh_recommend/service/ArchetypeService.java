@@ -36,14 +36,14 @@ public class ArchetypeService {
     }
     
 	public List<ArchetypeResponse> getAll() {
-        List<Archetype> archs = archetypeRepository.findAll();
+        List<Archetype> archs = archetypeRepository.findAllWithSubtypes();
         List<ArchetypeResponse> archetypeResponseList = new ArrayList<ArchetypeResponse>();
         archs.forEach(arch -> archetypeResponseList.add(new ArchetypeResponse(arch)));
         return archetypeResponseList;
     }
 
     public ArchetypeResponse getOne(UUID id) {
-        Optional<Archetype> maybeArchetype = archetypeRepository.findById(id);
+        Optional<Archetype> maybeArchetype = archetypeRepository.findOneWithSubtypes(id);
         if(maybeArchetype.isEmpty()) {
             throw new EntityNotFoundException("Archetype with the id " + id.toString() + " does not exist.");
         }
@@ -94,27 +94,28 @@ public class ArchetypeService {
 		archetypeRepository.deleteById(maybeArchetype.get().getId());
 	}
 	
-	public ArchetypeRequest recommend(ArchetypeRequest areq) {
+	public List<ArchetypeResponse> recommend(ArchetypeRequest areq) {
+		
 		KieSession kieSession = kieContainer.newKieSession();
 		
+		// List of all archetypes that we will filter with scoring
 		List<ArchetypeResponse> respList = new ArrayList<ArchetypeResponse>();
 		respList = getAll();
-		kieSession.insert(areq);
-		List<Type> ct = new ArrayList<Type>();
-		ct = areq.getChosenTypes();
-		kieSession.insert(ct);
-		for (ArchetypeResponse aresp : respList) {
-			kieSession.insert(aresp);
-			List<Type> tt = new ArrayList<Type>();
-			tt = aresp.getTypesInDeck();
-			kieSession.insert(respList);
-			kieSession.insert(tt);
-		}
 		
-		//ArchetypeResponse arsp = new ArchetypeResponse();
+		// Chosen difficulty by user checker:
+		// This will update request and we will use that update for scoring later
+		kieSession.getAgenda().getAgendaGroup("determine_difficulty").setFocus();
+		kieSession.insert(areq);
 		kieSession.fireAllRules();
-		kieSession.dispose();
-		return areq;
+		
+		for (ArchetypeResponse aresp : respList) {			
+			kieSession.insert(areq);
+			kieSession.insert(aresp);
+			kieSession.fireAllRules();
+		}
+	
+		System.out.println();
+		return respList;
 	}
 	
 }

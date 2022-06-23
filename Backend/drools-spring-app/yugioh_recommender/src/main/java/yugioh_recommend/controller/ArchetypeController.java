@@ -36,8 +36,8 @@ public class ArchetypeController {
     }
 
     @PostMapping
-    public UUID create(@RequestBody ArchetypeRequest pr) {
-        return archetypeService.create(pr);
+    public UUID create(@RequestBody ArchetypeRequest ar) {
+        return archetypeService.create(ar);
     }
 
     @PutMapping("/{id}")
@@ -51,8 +51,8 @@ public class ArchetypeController {
     }
 
     @PostMapping("/recommend")
-    public ArchetypeRequest recommend(@RequestBody ArchetypeRequest pr) {
-        return archetypeService.recommend(pr);
+    public List<ArchetypeResponse> recommend(@RequestBody ArchetypeRequest ar) {
+        return archetypeService.recommend(ar);
     }
    
 }

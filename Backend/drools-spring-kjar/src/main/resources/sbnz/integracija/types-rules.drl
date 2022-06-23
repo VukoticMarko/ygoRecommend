@@ -4,6 +4,32 @@ import yugioh_recommend.model.*;
 import yugioh_recommend.dto.*;
 
 
-
+rule "Type Rule - Number Of Types In Archetype"
+	
+	when
+		$areq: ArchetypeRequest($chosenTypes: chosenTypes)
+		$aresp: ArchetypeResponse($types: typesInDeck)
+		$value: Number() from accumulate
+			(
+				Type($type: this) from $types,
+			init
+				(
+					int count = 0;
+				),
+				action
+				(
+					count += 1;
+				),
+				result
+				(
+					count
+			    )
+			)
+				
+	then
+		int count = $value.intValue();
+		modify($aresp){setNumberOfTypes(count)}
+		
+end
 
 

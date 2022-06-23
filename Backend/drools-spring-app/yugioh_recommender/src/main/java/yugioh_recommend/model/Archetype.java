@@ -9,13 +9,15 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
-import yugioh_recommend.model.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 
 @Entity(name = "archetypes")
@@ -49,12 +51,13 @@ public class Archetype {
 	private List<Type> typesInDeck; // Cyber Dragon has Machine and Dragon type here (By looks of the cards)
 
 	
-//	@ManyToMany
-//	@JoinTable(
-//	  name = "archetype_sub_types_in_deck", 
-//	  joinColumns = @JoinColumn(name = "archetypes_id"), 
-//	  inverseJoinColumns = @JoinColumn(name = "sub_type_a_id"))
-//	private List<SubTypeA> subTypesInDeck; // Effect, Link, Fusion, XYZ
+	@ManyToMany
+	@JoinTable(
+	  name = "archetype_sub_types_in_deck", 
+	  joinColumns = @JoinColumn(name = "archetype_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "sub_id"))
+	@Fetch(FetchMode.JOIN)
+	private List<Sub> subs; // Effect, Link, Fusion, XYZ
 	
 	
 	@Column(name = "deck_difficulty_int")
@@ -97,14 +100,14 @@ public class Archetype {
 	
 	// Score for rating the archetype in recommendation
 	@Transient
-	private float current_score;
+	private double current_score;
 	
 	public Archetype() {
 		this.current_score = 0;
 	}
 
 	public Archetype(UUID id, String archetypeName, String description, String howToPlay,
-								Type mainTypeOfDeck, List<Type> typesInDeck, List<SubTypeA> subTypesInDeck,
+								Type mainTypeOfDeck, List<Type> typesInDeck, List<Sub> subTypesInDeck,
 								int deckDifficultyInt, List<ExtraDeckType> extraDeck,
 								List<Playstyle> playstyle, List<Attribute> attribute, List<String> keywords) {
 							super();
@@ -114,7 +117,7 @@ public class Archetype {
 							this.howToPlay = howToPlay;
 							this.mainTypeOfDeck = mainTypeOfDeck;
 							this.typesInDeck = typesInDeck;
-							//this.subTypesInDeck = subTypesInDeck;
+							this.subs = subTypesInDeck;
 							this.deckDifficultyInt = deckDifficultyInt;
 							this.extraDeck = extraDeck;
 							this.playstyle = playstyle;
@@ -185,14 +188,14 @@ public class Archetype {
 	}
 
 
-//	public List<SubTypeA> getSubTypesInDeck() {
-//		return subTypesInDeck;
-//	}
-//
-//
-//	public void setSubTypesInDeck(List<SubTypeA> subTypesInDeck) {
-//		this.subTypesInDeck = subTypesInDeck;
-//	}
+	public List<Sub> getSubs() {
+		return subs;
+	}
+
+
+	public void setSubs(List<Sub> subTypesInDeck) {
+		this.subs = subTypesInDeck;
+	}
 
 
 	public int getDeckDifficultyInt() {
