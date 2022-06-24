@@ -103,6 +103,8 @@ public class ArchetypeService {
 	
 	public List<ArchetypeResponse> recommend(ArchetypeRequest areq) {
 		
+		// TODO: SREDI NULL SLUCAJEVE, AKO KORISNIK NE UNESE NESTO
+		
 		areq.countTypes(); // Help function for later bonus scoring
 		
 		Facts fact = new Facts();
@@ -148,8 +150,15 @@ public class ArchetypeService {
 		}
 		kieSession.fireAllRules();
 		
-		
-		
+		// It's time for extra-deck options
+		// We score archetypes based on how many user's extra-deck options they have
+		// If archetype has all extra-deck types that user chose, that archetype gets bonus!
+		kieSession.getAgenda().getAgendaGroup("extra_deck_rules").setFocus();
+		for (ArchetypeResponse aresp : respList) {			
+			kieSession.insert(areq);
+			kieSession.insert(aresp);
+		}
+		kieSession.fireAllRules();
 		
 		return respList;
 	}

@@ -1,0 +1,69 @@
+package sbnz.integracija;
+
+import yugioh_recommend.model.*;
+import yugioh_recommend.dto.*;
+import yugioh_recommend.facts.*;
+
+rule "Extra-Deck Rule - Count Number Of Extra-Deck Mechanics"
+	salience 100
+	agenda-group "extra_deck_rules"
+	when
+		$aresp: ArchetypeResponse($extraTypes: extraDeck)
+		$fact: Facts($bonus: bonus)
+		$value: Number() from accumulate
+        (
+            ExtraDeckType($eType: this) from $extraTypes,
+            init
+            (
+                int count = 0;
+            ),
+            action
+            (	            
+               	count += 1;  
+            ),
+            result
+            (
+                count
+            )
+        )
+	then
+		int count = $value.intValue();
+		modify($aresp) {setNumberOfExtraDeckTypes(count)}
+end
+
+rule "Extra-Deck Rule - Score For Extra-Deck"
+	salience 70
+	agenda-group "extra_deck_rules"
+	when
+		$areq: ArchetypeRequest($difficulty: difficulty, $noct: numberOfChosenTypes)
+		$aresp: ArchetypeResponse($subs: subs, $extraTypes: extraDeck)
+		$fact: Facts($bonus: bonus)
+		$value: Number() from accumulate
+        (
+            ExtraDeckType($eType: this) from $extraTypes,
+            init
+            (
+                int count = 0;
+            ),
+            action
+            (	
+                if($areq.getChosenExtraDeckMechanics().contains($eType)){
+            		count += 1;
+            		if($aresp.getNumberOfExtraDeckTypes() == count){
+            			$fact.setBonus(0.5);
+            		}
+                }
+            ),
+            result
+            (
+                count
+            )
+        )
+	then
+		int count = $value.intValue();
+		double currentScore = $aresp.getCurrentScore();
+		double bonus = $fact.getBonus();
+		double newScore = currentScore + (count * 0.3) + bonus;
+		$fact.setBonus(0);
+		modify($aresp) {setCurrentScore(newScore)}
+end

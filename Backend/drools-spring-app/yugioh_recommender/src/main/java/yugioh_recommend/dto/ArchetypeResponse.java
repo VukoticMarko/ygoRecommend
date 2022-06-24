@@ -30,6 +30,7 @@ public class ArchetypeResponse {
 	private List<String> keywords; 
 	private double currentScore;
 	private int numberOfTypes;
+	private int numberOfExtraDeckTypes;
 	private List<SubType> helpingSTList;	
 	
 	public void initHelpingList(List<SubResponse> list) {
@@ -295,6 +296,14 @@ public class ArchetypeResponse {
 
 	public void setHelpingSTList(List<SubType> helpingSTList) {
 		this.helpingSTList = helpingSTList;
+	}
+
+	public int getNumberOfExtraDeckTypes() {
+		return numberOfExtraDeckTypes;
+	}
+
+	public void setNumberOfExtraDeckTypes(int numberOfExtraDeckTypes) {
+		this.numberOfExtraDeckTypes = numberOfExtraDeckTypes;
 	}
 
 
