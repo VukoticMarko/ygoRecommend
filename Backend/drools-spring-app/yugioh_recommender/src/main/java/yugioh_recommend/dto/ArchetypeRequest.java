@@ -23,9 +23,18 @@ public class ArchetypeRequest {
 	private Attribute attribute;
 	private String keywords;
 	private double currentScore;
+	private int numberOfChosenTypes;
 	
 	public ArchetypeRequest() {
 		
+	}
+	
+	public void countTypes() {
+		int i = 0;
+		for (Type type : this.chosenTypes) {
+			i++;
+		}
+		this.numberOfChosenTypes = i;
 	}
 	
 	// Constructor for recommend system

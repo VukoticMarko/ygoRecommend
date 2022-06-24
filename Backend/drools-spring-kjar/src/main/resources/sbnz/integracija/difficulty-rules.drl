@@ -2,6 +2,7 @@ package sbnz.integracija;
 
 import yugioh_recommend.model.*;
 import yugioh_recommend.dto.*;
+import yugioh_recommend.facts.*;
 
 rule "Determine Deck Difficulty - Easy"
 	salience 100
@@ -37,4 +38,36 @@ rule "Determine Deck Difficulty - Master"
 		$areq: ArchetypeRequest(chosenDifficulty >= 10 && chosenDifficulty <= 12)
 	then
 		modify($areq) {setDifficulty(Difficulty.Master)}
+end
+
+rule "Deck Difficulty Scoring"
+	salience 80
+	agenda-group "determine_difficulty_score"
+	no-loop
+	when
+		$areq: ArchetypeRequest($difficulty: difficulty)
+		$fact: Facts($respList: arList)
+		$value: Number() from accumulate
+        (
+            ArchetypeResponse($aresp: this) from $respList,
+            init
+            (
+                int count = 0;
+            ),
+            action
+            (	
+            	double currentScore = $aresp.getCurrentScore();
+                if($difficulty == $aresp.getDeckDifficulty()){
+                	count += 1;
+                	$aresp.setCurrentScore(count * 0.5);      
+                	count = 0;  	
+                }     
+            ),
+            result
+            (	
+            	count
+            )
+        )
+	then
+		modify($fact) {setArList($respList)}
 end

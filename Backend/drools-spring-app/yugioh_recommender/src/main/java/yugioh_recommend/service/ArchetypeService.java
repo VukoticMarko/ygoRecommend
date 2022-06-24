@@ -16,8 +16,11 @@ import org.springframework.stereotype.Service;
 
 import yugioh_recommend.dto.ArchetypeRequest;
 import yugioh_recommend.dto.ArchetypeResponse;
+import yugioh_recommend.dto.SubResponse;
+import yugioh_recommend.facts.Facts;
 import yugioh_recommend.model.Archetype;
-import yugioh_recommend.model.Type;
+import yugioh_recommend.model.Sub;
+import yugioh_recommend.model.SubType;
 import yugioh_recommend.repository.ArchetypeRepository;
 
 @Service
@@ -39,6 +42,10 @@ public class ArchetypeService {
         List<Archetype> archs = archetypeRepository.findAllWithSubtypes();
         List<ArchetypeResponse> archetypeResponseList = new ArrayList<ArchetypeResponse>();
         archs.forEach(arch -> archetypeResponseList.add(new ArchetypeResponse(arch)));
+        for (ArchetypeResponse archetypeResponse : archetypeResponseList) {
+			archetypeResponse.initHelpingList(archetypeResponse.getSubs());
+			archetypeResponse.setDeckDifficulty(archetypeResponse.convertDifficulty(archetypeResponse.getDeckDifficultyInt()));
+		}
         return archetypeResponseList;
     }
 
@@ -96,6 +103,10 @@ public class ArchetypeService {
 	
 	public List<ArchetypeResponse> recommend(ArchetypeRequest areq) {
 		
+		areq.countTypes(); // Help function for later bonus scoring
+		
+		Facts fact = new Facts();
+		
 		KieSession kieSession = kieContainer.newKieSession();
 		
 		// List of all archetypes that we will filter with scoring
@@ -104,17 +115,29 @@ public class ArchetypeService {
 		
 		// Chosen difficulty by user checker:
 		// This will update request and we will use that update for scoring later
+		// This rule has direct impact on subtype_difficulty_chain
 		kieSession.getAgenda().getAgendaGroup("determine_difficulty").setFocus();
 		kieSession.insert(areq);
 		kieSession.fireAllRules();
 		
+		// Next up is checking user's selected difficulty and arthetype's difficulty
+		// We will score archetypes with selected difficulties
+		kieSession.getAgenda().getAgendaGroup("determine_difficulty_score").setFocus();
+		kieSession.insert(areq);
+		fact.setArList(respList);
+		kieSession.insert(fact);
+		kieSession.fireAllRules();
+		respList = fact.getArList();
+		
+		// Now with help of chosen difficulty we will see
+		// SubTypes that are that difficult and we will score them
+		kieSession.getAgenda().getAgendaGroup("subtype_difficulty_chain").setFocus();
 		for (ArchetypeResponse aresp : respList) {			
 			kieSession.insert(areq);
 			kieSession.insert(aresp);
-			kieSession.fireAllRules();
 		}
-	
-		System.out.println();
+		kieSession.fireAllRules();
+		
 		return respList;
 	}
 	

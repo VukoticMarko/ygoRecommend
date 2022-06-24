@@ -5,7 +5,8 @@ import yugioh_recommend.dto.*;
 
 
 rule "Type Rule - Number Of Types In Archetype"
-	
+	salience 100
+	agenda-group "type_rules"
 	when
 		$areq: ArchetypeRequest($chosenTypes: chosenTypes)
 		$aresp: ArchetypeResponse($types: typesInDeck)

@@ -3,12 +3,56 @@ package sbnz.integracija;
 import yugioh_recommend.model.*;
 import yugioh_recommend.dto.*;
 
-rule "Sub-Type Rule - Easy & Normal Sub-Type"
-	salience 2
+
+rule "Sub-Type Rule - Bonus Score For Sub-Types In Certain Difficulty"
+	salience 100
+	agenda-group "subtype_difficulty_chain"
 	when
-		$areq: ArchetypeRequest(difficulty == Difficulty.Easy && chosenSubTypes contains SubType.Normal)
-		$aresp: ArchetypeResponse()
+		$areq: ArchetypeRequest($difficulty: difficulty)
+		$aresp: ArchetypeResponse($subs: subs, $helpList: helpingSTList)
+		$value: Number() from accumulate
+        (
+            SubResponse($sr: this) from $subs,
+            init
+            (
+                int count = 0;
+                int i = 0;
+            ),
+            action
+            (	
+                if($areq.getChosenSubTypes().contains($helpList.get(i))){
+                    if($difficulty == Difficulty.Master){
+                    	count += 1;
+                    }
+                    if($difficulty == Difficulty.Hard){
+                    	if($sr.getDifficulty() == Difficulty.Hard ||
+                    	   $sr.getDifficulty() == Difficulty.Medium ||
+                    	   $sr.getDifficulty() == Difficulty.Easy){
+                    			count += 1;
+                    	}
+                    }
+                    if($difficulty == Difficulty.Medium){
+                    	if($sr.getDifficulty() == Difficulty.Medium ||
+                    	   $sr.getDifficulty() == Difficulty.Easy){
+                    			count += 1;
+                    	}
+                    }
+                    if($difficulty == Difficulty.Easy){
+                    	if($sr.getDifficulty() == Difficulty.Easy){
+                    		count += 1;
+                    	}
+                    }
+                }
+                i += 1;
+            ),
+            result
+            (
+                count
+            )
+        )
 	then
-		double cs = $areq.getCurrentScore();
-		modify($aresp) {setCurrentScore(cs + 0.5)}
+		int count = $value.intValue();
+		double currentScore = $aresp.getCurrentScore();
+		double newScore = currentScore + (count * 0.1);
+		modify($aresp) {setCurrentScore(newScore)}
 end

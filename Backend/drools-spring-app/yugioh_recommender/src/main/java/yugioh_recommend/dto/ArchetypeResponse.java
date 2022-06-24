@@ -10,6 +10,7 @@ import yugioh_recommend.model.Difficulty;
 import yugioh_recommend.model.ExtraDeckType;
 import yugioh_recommend.model.Playstyle;
 import yugioh_recommend.model.Sub;
+import yugioh_recommend.model.SubType;
 import yugioh_recommend.model.Type;
 
 public class ArchetypeResponse {
@@ -29,6 +30,16 @@ public class ArchetypeResponse {
 	private List<String> keywords; 
 	private double currentScore;
 	private int numberOfTypes;
+	private List<SubType> helpingSTList;	
+	
+	public void initHelpingList(List<SubResponse> list) {
+		
+		List<SubType> finalList = new ArrayList<>();
+		for (SubResponse subResponse : list) {
+			finalList.add(subResponse.getSubType());
+		}
+		setHelpingSTList(finalList);
+	}
 	
 	public List<ArchetypeResponse> convertArchToArchResponse(List<Archetype> list){
 		
@@ -74,6 +85,16 @@ public class ArchetypeResponse {
 		return returnList;
 	}
 
+	public Difficulty convertDifficulty(int diff) {
+		if(diff > 0 && diff <= 3) {
+			return Difficulty.Easy;
+		}else if(diff >= 4 && diff <= 6) {
+			return Difficulty.Medium;
+		}else if(diff >= 7 && diff <= 9) {
+			return Difficulty.Hard;
+		}else return Difficulty.Master;
+	}
+	
 	public ArchetypeResponse(UUID id, String archetypeName, String description, String howToPlay, Type mainTypeOfDeck,
 			List<Type> typesInDeck, List<Sub> subTypesInDeck, int deckDifficultyInt, Difficulty deckDifficulty,
 			List<ExtraDeckType> extraDeck, List<Playstyle> playstyle, List<Attribute> attribute,
@@ -266,6 +287,14 @@ public class ArchetypeResponse {
 
 	public void setNumberOfTypes(int numberOfTypes) {
 		this.numberOfTypes = numberOfTypes;
+	}
+
+	public List<SubType> getHelpingSTList() {
+		return helpingSTList;
+	}
+
+	public void setHelpingSTList(List<SubType> helpingSTList) {
+		this.helpingSTList = helpingSTList;
 	}
 
 
