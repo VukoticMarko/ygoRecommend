@@ -8,11 +8,23 @@ public class Facts {
 	
 	private List<ArchetypeResponse> arList;
 	private double helpScore;
-
+	private double bonus = 0; 
+	
 	public Facts(){}
 	
 	
-	
+	public double getBonus() {
+		return bonus;
+	}
+
+
+
+	public void setBonus(double bonus) {
+		this.bonus = bonus;
+	}
+
+
+
 	public double getHelpScore() {
 		return helpScore;
 	}

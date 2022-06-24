@@ -138,6 +138,19 @@ public class ArchetypeService {
 		}
 		kieSession.fireAllRules();
 		
+		// Now, we will score the number of types that user chose vs the number that archetype has
+		// First we will count number of types in each archetype
+		// Second we will score archetypes with amount of user's selected types
+		kieSession.getAgenda().getAgendaGroup("type_rules").setFocus();
+		for (ArchetypeResponse aresp : respList) {			
+			kieSession.insert(areq);
+			kieSession.insert(aresp);
+		}
+		kieSession.fireAllRules();
+		
+		
+		
+		
 		return respList;
 	}
 	

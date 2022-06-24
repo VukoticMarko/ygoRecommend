@@ -172,6 +172,14 @@ public class ArchetypeRequest {
 		this.keywords = keywords;
 	}
 
+	public int getNumberOfChosenTypes() {
+		return numberOfChosenTypes;
+	}
+
+	public void setNumberOfChosenTypes(int numberOfChosenTypes) {
+		this.numberOfChosenTypes = numberOfChosenTypes;
+	}
+
 	
 	
 } 

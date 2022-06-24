@@ -33,4 +33,41 @@ rule "Type Rule - Number Of Types In Archetype"
 		
 end
 
-
+rule "Type Rule - Score For Types"
+	salience 70
+	agenda-group "type_rules"
+	when
+		$areq: ArchetypeRequest($difficulty: difficulty, $noct: numberOfChosenTypes)
+		$aresp: ArchetypeResponse($subs: subs, $types: typesInDeck)
+		$fact: Facts($bonus: bonus)
+		$value: Number() from accumulate
+        (
+            Type($type: this) from $types,
+            init
+            (
+                int count = 0;
+            ),
+            action
+            (	
+                if($areq.getChosenTypes().contains($type)){
+                	if($noct == 1){
+                		$fact.setBonus(2);
+                	}else{
+                		System.out.println(count);
+                    	count += 1;
+                    }
+                }
+            ),
+            result
+            (
+                count
+            )
+        )
+	then
+		int count = $value.intValue();
+		double currentScore = $aresp.getCurrentScore();
+		double bonus = $fact.getBonus();
+		double newScore = currentScore + (count * 0.3) + bonus;
+		$fact.setBonus(0);
+		modify($aresp) {setCurrentScore(newScore)}
+end
