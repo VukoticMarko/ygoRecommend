@@ -106,6 +106,7 @@ public class ArchetypeService {
 		// TODO: SREDI NULL SLUCAJEVE, AKO KORISNIK NE UNESE NESTO
 		
 		areq.countTypes(); // Help function for later bonus scoring
+		int numberOfDecks = areq.getNumberOfDecks();
 		
 		Facts fact = new Facts();
 		
@@ -133,41 +134,50 @@ public class ArchetypeService {
 		
 		// Now with help of chosen difficulty we will see
 		// SubTypes that are that difficult and we will score them
-		kieSession.getAgenda().getAgendaGroup("subtype_difficulty_chain").setFocus();
-		for (ArchetypeResponse aresp : respList) {			
-			kieSession.insert(areq);
-			kieSession.insert(aresp);
+		if(areq.getChosenSubTypes() != null && !areq.getChosenSubTypes().isEmpty()) {	
+			kieSession.getAgenda().getAgendaGroup("subtype_difficulty_chain").setFocus();
+			for (ArchetypeResponse aresp : respList) {			
+				kieSession.insert(areq);
+				kieSession.insert(aresp);
+			}
+			kieSession.fireAllRules();
 		}
-		kieSession.fireAllRules();
 		
 		// Now, we will score the number of types that user chose vs the number that archetype has
 		// First we will count number of types in each archetype
 		// Second we will score archetypes with amount of user's selected types
-		kieSession.getAgenda().getAgendaGroup("type_rules").setFocus();
-		for (ArchetypeResponse aresp : respList) {			
-			kieSession.insert(areq);
-			kieSession.insert(aresp);
+		if(areq.getChosenTypes() != null && !areq.getChosenTypes().isEmpty()) {
+			kieSession.getAgenda().getAgendaGroup("type_rules").setFocus();
+			for (ArchetypeResponse aresp : respList) {			
+				kieSession.insert(areq);
+				kieSession.insert(aresp);
+			}
+			kieSession.fireAllRules();
 		}
-		kieSession.fireAllRules();
 		
 		// It's time for extra-deck options
 		// We score archetypes based on how many user's extra-deck options they have
 		// If archetype has all extra-deck types that user chose, that archetype gets bonus!
-		kieSession.getAgenda().getAgendaGroup("extra_deck_rules").setFocus();
-		for (ArchetypeResponse aresp : respList) {			
-			kieSession.insert(areq);
-			kieSession.insert(aresp);
+		if(areq.getChosenExtraDeckMechanics() != null && !areq.getChosenExtraDeckMechanics().isEmpty()) {
+			kieSession.getAgenda().getAgendaGroup("extra_deck_rules").setFocus();
+			for (ArchetypeResponse aresp : respList) {			
+				kieSession.insert(areq);
+				kieSession.insert(aresp);
+			}
+			kieSession.fireAllRules();
 		}
-		kieSession.fireAllRules();
 		
 		// We will check now user's preferred playstyle
 		// Archetypes with that playstyle will get score
-		kieSession.getAgenda().getAgendaGroup("playstyle_rules").setFocus();
-		for (ArchetypeResponse aresp : respList) {			
-			kieSession.insert(areq);
-			kieSession.insert(aresp);
+		if(areq.getChosenPlaystyles() != null && !areq.getChosenPlaystyles().isEmpty()) {
+			kieSession.getAgenda().getAgendaGroup("playstyle_rules").setFocus();
+			for (ArchetypeResponse aresp : respList) {			
+				kieSession.insert(areq);
+				kieSession.insert(aresp);
+			}
+			kieSession.fireAllRules();
 		}
-		kieSession.fireAllRules();
+		
 		
 		return respList;
 	}

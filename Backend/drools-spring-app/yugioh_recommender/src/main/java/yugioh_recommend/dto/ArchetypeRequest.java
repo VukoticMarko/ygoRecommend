@@ -25,6 +25,7 @@ public class ArchetypeRequest {
 	private String keywords;
 	private double currentScore;
 	private int numberOfChosenTypes;
+	private int numberOfDecks; // How many decks user wants to get recommended by system
 	
 	public ArchetypeRequest() {
 		
@@ -181,6 +182,13 @@ public class ArchetypeRequest {
 		this.numberOfChosenTypes = numberOfChosenTypes;
 	}
 
-	
+	public int getNumberOfDecks() {
+		return numberOfDecks;
+	}
+
+	public void setNumberOfDecks(int numberOfDecks) {
+		this.numberOfDecks = numberOfDecks;
+	}
+
 	
 } 
