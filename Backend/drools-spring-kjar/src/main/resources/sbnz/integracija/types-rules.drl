@@ -37,7 +37,7 @@ rule "Type Rule - Score For Types"
 	salience 70
 	agenda-group "type_rules"
 	when
-		$areq: ArchetypeRequest($difficulty: difficulty, $noct: numberOfChosenTypes)
+		$areq: ArchetypeRequest($noct: numberOfChosenTypes)
 		$aresp: ArchetypeResponse($subs: subs, $types: typesInDeck)
 		$fact: Facts($bonus: bonus)
 		$value: Number() from accumulate

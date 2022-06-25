@@ -35,7 +35,7 @@ rule "Extra-Deck Rule - Score For Extra-Deck"
 	salience 70
 	agenda-group "extra_deck_rules"
 	when
-		$areq: ArchetypeRequest($difficulty: difficulty, $noct: numberOfChosenTypes)
+		$areq: ArchetypeRequest($noct: numberOfChosenTypes)
 		$aresp: ArchetypeResponse($subs: subs, $extraTypes: extraDeck)
 		$fact: Facts($bonus: bonus)
 		$value: Number() from accumulate

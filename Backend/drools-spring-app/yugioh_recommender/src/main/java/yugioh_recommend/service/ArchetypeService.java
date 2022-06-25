@@ -103,8 +103,6 @@ public class ArchetypeService {
 	
 	public List<ArchetypeResponse> recommend(ArchetypeRequest areq) {
 		
-		// TODO: SREDI NULL SLUCAJEVE, AKO KORISNIK NE UNESE NESTO
-		
 		areq.countTypes(); // Help function for later bonus scoring
 		int numberOfDecks = areq.getNumberOfDecks();
 		
@@ -119,22 +117,24 @@ public class ArchetypeService {
 		// Chosen difficulty by user checker:
 		// This will update request and we will use that update for scoring later
 		// This rule has direct impact on subtype_difficulty_chain
-		kieSession.getAgenda().getAgendaGroup("determine_difficulty").setFocus();
-		kieSession.insert(areq);
-		kieSession.fireAllRules();
-		
-		// Next up is checking user's selected difficulty and arthetype's difficulty
-		// We will score archetypes with selected difficulties
-		kieSession.getAgenda().getAgendaGroup("determine_difficulty_score").setFocus();
-		kieSession.insert(areq);
-		fact.setArList(respList);
-		kieSession.insert(fact);
-		kieSession.fireAllRules();
-		respList = fact.getArList();
+		if(areq.getChosenDifficulty() != 0) {
+			kieSession.getAgenda().getAgendaGroup("determine_difficulty").setFocus();
+			kieSession.insert(areq);
+			kieSession.fireAllRules();
+			
+			// Next up is checking user's selected difficulty and arthetype's difficulty
+			// We will score archetypes with selected difficulties
+			kieSession.getAgenda().getAgendaGroup("determine_difficulty_score").setFocus();
+			kieSession.insert(areq);
+			fact.setArList(respList);
+			kieSession.insert(fact);
+			kieSession.fireAllRules();
+			respList = fact.getArList();
+		}
 		
 		// Now with help of chosen difficulty we will see
 		// SubTypes that are that difficult and we will score them
-		if(areq.getChosenSubTypes() != null && !areq.getChosenSubTypes().isEmpty()) {	
+		if(areq.getChosenSubTypes() != null && !areq.getChosenSubTypes().isEmpty() && areq.getChosenDifficulty() != 0) {	
 			kieSession.getAgenda().getAgendaGroup("subtype_difficulty_chain").setFocus();
 			for (ArchetypeResponse aresp : respList) {			
 				kieSession.insert(areq);
