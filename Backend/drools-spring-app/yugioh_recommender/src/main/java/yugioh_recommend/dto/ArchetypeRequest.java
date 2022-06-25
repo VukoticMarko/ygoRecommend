@@ -5,6 +5,7 @@ import java.util.List;
 import yugioh_recommend.model.Attribute;
 import yugioh_recommend.model.Difficulty;
 import yugioh_recommend.model.ExtraDeckType;
+import yugioh_recommend.model.Playstyle;
 import yugioh_recommend.model.SubType;
 import yugioh_recommend.model.Type;
 
@@ -19,7 +20,7 @@ public class ArchetypeRequest {
 	private int chosenDifficulty;
 	private Difficulty difficulty;
 	private List<ExtraDeckType> chosenExtraDeckMechanics;
-	private String chosenPlaystyle;
+	private List<Playstyle> chosenPlaystyles;
 	private Attribute attribute;
 	private String keywords;
 	private double currentScore;
@@ -39,19 +40,19 @@ public class ArchetypeRequest {
 	
 	// Constructor for recommend system
 	public ArchetypeRequest(List<Type> chosenTypes, List<SubType> chosenSubTypes, int chosenDifficulty,
-			List<ExtraDeckType> chosenExtraDeckMechanics, String chosenPlaystyle) {
+			List<ExtraDeckType> chosenExtraDeckMechanics, List<Playstyle> chosenPlaystyle) {
 		super();
 		this.chosenTypes = chosenTypes;
 		this.chosenSubTypes = chosenSubTypes;
 		this.chosenDifficulty = chosenDifficulty;
-		this.chosenPlaystyle = chosenPlaystyle;
+		this.chosenPlaystyles = chosenPlaystyle;
 		this.chosenExtraDeckMechanics = chosenExtraDeckMechanics;
 	}
 	
 	// Constructor for CRUD operations
 	public ArchetypeRequest(String name, String description, String howToPlay, Type mainTypeOfDeck,
 			List<Type> chosenTypes, List<SubType> chosenSubTypes, int chosenDifficulty, Difficulty difficulty,
-			List<ExtraDeckType> chosenExtraDeckMechanics, String chosenPlaystyle, Attribute attribute, String keywords) {
+			List<ExtraDeckType> chosenExtraDeckMechanics, List<Playstyle> chosenPlaystyle, Attribute attribute, String keywords) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -62,7 +63,7 @@ public class ArchetypeRequest {
 		this.chosenDifficulty = chosenDifficulty;
 		this.difficulty = difficulty;
 		this.chosenExtraDeckMechanics = chosenExtraDeckMechanics;
-		this.chosenPlaystyle = chosenPlaystyle;
+		this.chosenPlaystyles = chosenPlaystyle;
 		this.attribute = attribute;
 		this.keywords = keywords;
 	}
@@ -148,12 +149,12 @@ public class ArchetypeRequest {
 		this.chosenExtraDeckMechanics = chosenExtraDeckMechanics;
 	}
 
-	public String getChosenPlaystyle() {
-		return chosenPlaystyle;
+	public List<Playstyle> getChosenPlaystyles() {
+		return chosenPlaystyles;
 	}
 
-	public void setChosenPlaystyle(String chosenPlaystyle) {
-		this.chosenPlaystyle = chosenPlaystyle;
+	public void setChosenPlaystyles(List<Playstyle> chosenPlaystyle) {
+		this.chosenPlaystyles = chosenPlaystyle;
 	}
 
 	public Attribute getAttribute() {

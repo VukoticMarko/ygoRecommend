@@ -1,0 +1,36 @@
+package sbnz.integracija;
+
+import yugioh_recommend.model.*;
+import yugioh_recommend.dto.*;
+import yugioh_recommend.facts.*;
+
+rule "Playstyle Rule - Score For Playstyle"
+	salience 25
+	agenda-group "playstyle_rules"
+	when
+		$areq: ArchetypeRequest()
+		$aresp: ArchetypeResponse($playstyles: playstyle)
+		$value: Number() from accumulate
+        (
+            Playstyle($ps: this) from $playstyles,
+            init
+            (
+                int count = 0;
+            ),
+            action
+            (	
+                if($areq.getChosenPlaystyles().contains($ps)){
+            		count += 1;
+                }
+            ),
+            result
+            (
+                count
+            )
+        )
+	then
+		int count = $value.intValue();
+		double currentScore = $aresp.getCurrentScore();
+		double newScore = currentScore + (count * 0.5);
+		modify($aresp) {setCurrentScore(newScore)}
+end

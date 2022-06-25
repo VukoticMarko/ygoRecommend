@@ -160,6 +160,15 @@ public class ArchetypeService {
 		}
 		kieSession.fireAllRules();
 		
+		// We will check now user's preferred playstyle
+		// Archetypes with that playstyle will get score
+		kieSession.getAgenda().getAgendaGroup("playstyle_rules").setFocus();
+		for (ArchetypeResponse aresp : respList) {			
+			kieSession.insert(areq);
+			kieSession.insert(aresp);
+		}
+		kieSession.fireAllRules();
+		
 		return respList;
 	}
 	
