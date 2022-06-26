@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import Recommend from './recommend/recommend';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
@@ -14,7 +15,7 @@ root.render(
     <Routes>
       
       <Route path="recommend" element={<Recommend/>}></Route>
-      <Route path="/" element={<App />}> </Route>
+      <Route path="/" element={<App/>}> </Route>
     </Routes>
   </BrowserRouter>
   </div>
