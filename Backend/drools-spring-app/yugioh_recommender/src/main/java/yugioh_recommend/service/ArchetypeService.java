@@ -1,12 +1,15 @@
 package yugioh_recommend.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.commons.math3.genetics.Chromosome;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
@@ -16,11 +19,8 @@ import org.springframework.stereotype.Service;
 
 import yugioh_recommend.dto.ArchetypeRequest;
 import yugioh_recommend.dto.ArchetypeResponse;
-import yugioh_recommend.dto.SubResponse;
 import yugioh_recommend.facts.Facts;
 import yugioh_recommend.model.Archetype;
-import yugioh_recommend.model.Sub;
-import yugioh_recommend.model.SubType;
 import yugioh_recommend.repository.ArchetypeRepository;
 
 @Service
@@ -178,8 +178,30 @@ public class ArchetypeService {
 			kieSession.fireAllRules();
 		}
 		
+		// Finally we will sort the archetypes by their current_score
+		// And we will use numberOfDecks variable that user selected
+		// With that we will take that number of decks from sorted list and send to the site
+		// Sort by score
+		Collections.sort(respList, new Comparator<ArchetypeResponse>() {
+		    @Override
+		    public int compare(ArchetypeResponse ar1, ArchetypeResponse ar2) {
+		        return Double.compare(ar1.getCurrentScore(), ar2.getCurrentScore());
+		    }
+		});
+		Collections.reverse(respList); // Higher to lower score
+		// Now we will make new list to return specific number of decks and then fill it
+		List<ArchetypeResponse> finalList = new ArrayList<ArchetypeResponse>();
+		int i = 0;
+		for (ArchetypeResponse aresp : respList) {			
+			if(i == numberOfDecks) {
+				break;
+			}
+			finalList.add(aresp);
+			i++;
+		}
 		
-		return respList;
+		
+		return finalList;
 	}
 	
 }
