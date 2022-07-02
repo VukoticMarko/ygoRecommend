@@ -11,3 +11,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.input-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.decks-table {
+  width: 100%;
+  margin-bottom: 200px;
+  margin-top: 50px;
+  border-collapse: collapse;
+}
+
+.decks-table td, .decks-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.decks-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.decks-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(50, 124, 197);
+  color: white;
+}
+
+.desc {
+  max-height: 100px;
+  overflow: auto;
+}
